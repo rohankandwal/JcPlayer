@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.view_jcplayer.view.*
  */
 class JcPlayerView : LinearLayout, View.OnClickListener, SeekBar.OnSeekBarChangeListener, JcPlayerManagerListener {
 
-  private val jcPlayerManager: JcPlayerManager by lazy {
+   val jcPlayerManager: JcPlayerManager by lazy {
     JcPlayerManager.getInstance(context).get()!!
   }
 

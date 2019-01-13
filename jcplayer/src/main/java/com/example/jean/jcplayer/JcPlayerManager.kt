@@ -19,7 +19,7 @@ import java.util.*
  * Jesus loves you.
  */
 class JcPlayerManager
-private constructor(private val serviceConnection: JcServiceConnection) : JcPlayerServiceListener {
+ constructor(private val serviceConnection: JcServiceConnection) : JcPlayerServiceListener {
 
     lateinit var context: Context
     private var jcNotificationPlayer: JcNotificationPlayer? = null
@@ -43,9 +43,9 @@ private constructor(private val serviceConnection: JcServiceConnection) : JcPlay
         private set
 
     var repeatCurrAudio: Boolean = false
-        private set
 
-    private var repeatCount = 0
+
+     var repeatCount = 0
 
     init {
         initService()
