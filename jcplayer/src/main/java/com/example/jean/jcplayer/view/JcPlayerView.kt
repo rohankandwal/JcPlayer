@@ -36,7 +36,7 @@ class JcPlayerView : LinearLayout, View.OnClickListener, SeekBar.OnSeekBarChange
         JcPlayerManager.getInstance(context).get()!!
     }
 
-    val myPlaylist: List<JcAudio>?
+    var myPlaylist: List<JcAudio>? = ArrayList()
         get() = jcPlayerManager.playlist
 
     val isPlaying: Boolean
