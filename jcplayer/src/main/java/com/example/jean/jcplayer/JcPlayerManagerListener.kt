@@ -46,7 +46,7 @@ interface JcPlayerManagerListener {
     /**
      * Called when the player stops.
      */
-    fun onStopped(status: JcStatus)z
+    fun onStopped(status: JcStatus)
 
     /**
      * Notifies some error.
