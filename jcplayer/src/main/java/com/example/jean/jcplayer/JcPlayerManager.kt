@@ -40,7 +40,6 @@ class JcPlayerManager
     var onShuffleMode: Boolean = false
 
     var repeatPlaylist: Boolean = false
-        private set
 
     var repeatCurrAudio: Boolean = false
 

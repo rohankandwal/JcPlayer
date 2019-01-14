@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         player.initPlaylist(jcAudios, this);
         adapterSetup();
+        player.playAudio(jcAudios.get(0));
     }
 
     @Override

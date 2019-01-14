@@ -40,6 +40,7 @@
         <ImageButton
             android:id="@+id/btn_prev_notification"
             android:layout_width="@dimen/touch_default"
+            android:visibility="invisible"
             android:layout_height="@dimen/touch_default"
             android:background="@drawable/ic_previous_black"
             android:layout_centerVertical="true"
@@ -65,6 +66,7 @@
             android:id="@+id/btn_next_notification"
             android:layout_width="@dimen/touch_default"
             android:layout_height="@dimen/touch_default"
+            android:visibility="invisible"
             android:background="@drawable/ic_next_black"
             android:layout_alignTop="@+id/btn_play_notification"
             android:layout_alignParentEnd="true" />
