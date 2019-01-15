@@ -1,13 +1,14 @@
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="55dp"
     android:orientation="horizontal"
+    android:background="#FFFFFF"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
         android:id="@+id/icon_player"
-        android:layout_width="@dimen/icon_with"
-        android:layout_height="@dimen/icon_with"/>
+        android:layout_width="55dp"
+        android:layout_height="55dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,11 +18,14 @@
         <TextView
             android:id="@+id/txt_duration_notification"
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:textSize="@dimen/text_size"
+            android:layout_toStartOf="@+id/btn_play_notification"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/txt_current_music_notification"
             android:layout_centerHorizontal="true"
             android:ellipsize="marquee"
             android:scrollHorizontally="true"
@@ -30,17 +34,19 @@
 
         <ImageButton
             android:id="@+id/btn_play_notification"
-            android:layout_width="@dimen/touch_default"
-            android:layout_height="@dimen/touch_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"
             android:background="@drawable/ic_play_black"
-            android:layout_gravity="center"
-            android:layout_alignTop="@+id/btn_prev_notification"
+            android:layout_gravity="center_vertical"
             android:layout_centerHorizontal="true" />
 
         <ImageButton
             android:id="@+id/btn_prev_notification"
             android:layout_width="@dimen/touch_default"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_height="@dimen/touch_default"
             android:background="@drawable/ic_previous_black"
             android:layout_centerVertical="true"
@@ -51,10 +57,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size"
+            android:layout_marginStart="10dp"
+            android:layout_toStartOf="@+id/btn_play_notification"
             android:marqueeRepeatLimit ="marquee_forever"
             android:maxLines="1"
+            android:layout_marginTop="10dp"
             android:focusable="true"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:ellipsize="marquee"
             android:scrollHorizontally="true"
             android:textColor="@android:color/black"
@@ -66,7 +75,7 @@
             android:id="@+id/btn_next_notification"
             android:layout_width="@dimen/touch_default"
             android:layout_height="@dimen/touch_default"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:background="@drawable/ic_next_black"
             android:layout_alignTop="@+id/btn_play_notification"
             android:layout_alignParentEnd="true" />
