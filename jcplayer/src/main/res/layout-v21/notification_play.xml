@@ -8,6 +8,7 @@
     <ImageView
         android:id="@+id/icon_player"
         android:layout_width="55dp"
+        android:layout_gravity="center"
         android:layout_height="55dp"/>
 
     <RelativeLayout
@@ -19,7 +20,7 @@
             android:id="@+id/txt_duration_notification"
             android:textColor="@android:color/black"
             android:layout_width="match_parent"
-            android:textSize="@dimen/text_size"
+            android:textSize="12sp"
             android:layout_toStartOf="@+id/btn_play_notification"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
@@ -36,10 +37,11 @@
             android:id="@+id/btn_play_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="10dp"
+
             android:layout_alignParentEnd="true"
-            android:background="@drawable/ic_play_black"
+            android:background="@drawable/ic_play_arrow"
             android:layout_gravity="center_vertical"
             android:layout_centerHorizontal="true" />
 
@@ -56,7 +58,7 @@
             android:id="@+id/txt_current_music_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="14sp"
             android:layout_marginStart="10dp"
             android:layout_toStartOf="@+id/btn_play_notification"
             android:marqueeRepeatLimit ="marquee_forever"
