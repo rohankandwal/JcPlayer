@@ -1,6 +1,8 @@
 package com.example.jean.jcplayer
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import com.example.jean.jcplayer.general.JcStatus
 import com.example.jean.jcplayer.general.errors.AudioListNullPointerException
 import com.example.jean.jcplayer.general.errors.JcpServiceDisconnectedError
@@ -21,7 +23,7 @@ import java.util.*
 class JcPlayerManager
  constructor(private val serviceConnection: JcServiceConnection) : JcPlayerServiceListener {
 
-    lateinit var context: Context
+  lateinit var context: Context
     private var jcNotificationPlayer: JcNotificationPlayer? = null
     private var jcPlayerService: JcPlayerService? = null
     private var serviceBound = false
@@ -293,6 +295,10 @@ class JcPlayerManager
         notifyError(exception)
     }
 
+    override fun onKill() {
+      kill()
+    }
+
     /**
      * Notifies errors for the service listeners
      */
@@ -350,6 +356,7 @@ class JcPlayerManager
      */
     fun kill() {
         jcPlayerService?.let {
+          it.stopForeground(false)
             it.stop()
             it.onDestroy()
         }

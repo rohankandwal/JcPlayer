@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import com.example.jean.jcplayer.general.JcStatus
 import com.example.jean.jcplayer.general.Origin
 import com.example.jean.jcplayer.general.errors.AudioAssetsInvalidException
@@ -307,15 +308,20 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
   }
 
   fun finalize() {
+    Log.d("Killer", "onTaskRemoved")
     onDestroy()
     stopSelf()
   }
 
   override fun onTaskRemoved(rootIntent: Intent?) {
+    Log.d("Killer", "onTaskRemoved")
+    serviceListener?.onKill()
     super.onTaskRemoved(rootIntent)
   }
 
   override fun onDestroy() {
+    Log.d("Killer", "onTaskRemoved")
+    serviceListener?.onKill()
     super.onDestroy()
   }
 

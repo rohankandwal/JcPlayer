@@ -10,8 +10,10 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
-import android.support.v4.app.NotificationManagerCompat
+import android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC
+import android.util.Log
 import android.widget.RemoteViews
+import android.widget.Toast
 import com.example.jean.jcplayer.JcPlayerManager
 import com.example.jean.jcplayer.JcPlayerManagerListener
 import com.example.jean.jcplayer.R
@@ -32,9 +34,10 @@ class JcNotificationPlayer private constructor(
   private var title: String? = null
   private var time = "00:00"
   private var iconResource: Int = 0
-  private val notificationManager: NotificationManagerCompat by lazy {
-    NotificationManagerCompat.from(context)
+  private val notificationManager: NotificationManager by lazy {
+    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
   }
+
   private var notification: Notification? = null
 
   companion object {
@@ -45,6 +48,7 @@ class JcNotificationPlayer private constructor(
     const val ACTION = "jcplayer.ACTION"
     const val PLAYLIST = "jcplayer.PLAYLIST"
     const val CURRENT_AUDIO = "jcplayer.CURRENT_AUDIO"
+    const val CATEGORY_MUSIC = "music"
 
     private const val NOTIFICATION_ID = 100
     private const val NOTIFICATION_CHANNEL = "jcplayer.NOTIFICATION_CHANNEL"
@@ -71,8 +75,15 @@ class JcNotificationPlayer private constructor(
     openUi.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
     //        JcPlayerManager.getInstance(context, null, null).registerNotificationListener(this);
 
+    val priority = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationCompat.PRIORITY_HIGH
+    } else {
+      NotificationCompat.PRIORITY_DEFAULT
+    }
+
     notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
         .setSmallIcon(iconResourceResource)
+        .setCategory(CATEGORY_MUSIC)
         .setSound(null)
         .setLargeIcon(BitmapFactory.decodeResource(context.resources, iconResourceResource))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -80,15 +91,21 @@ class JcNotificationPlayer private constructor(
         .setContentIntent(PendingIntent.getActivity(context, NOTIFICATION_ID, openUi,
             PendingIntent.FLAG_CANCEL_CURRENT))
         .setAutoCancel(false)
+        .setOngoing(true)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setDefaults(Notification.DEFAULT_LIGHTS)
+        .setVibrate( LongArray(1) { 0L })
+        .setPriority(priority)
         .build()
 
     @RequiresApi(Build.VERSION_CODES.O)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val channel = NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL,
-          NotificationManager.IMPORTANCE_HIGH)
-      channel.setDescription("no sound")
+          NotificationManager.IMPORTANCE_DEFAULT)
+      channel.enableVibration(false)
+      channel.description = "no sound"
+      channel.lockscreenVisibility = VISIBILITY_PUBLIC
       channel.setSound(null, null)
-      val notificationManager = context.getSystemService(NotificationManager::class.java)
       notificationManager.createNotificationChannel(channel)
     }
 
