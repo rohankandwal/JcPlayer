@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.res.AssetFileDescriptor
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit
  * Jesus loves you.
  */
 class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener,
-    MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener {
+    MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener, AudioManager.OnAudioFocusChangeListener {
 
   private val binder = JcPlayerServiceBinder()
 
@@ -68,7 +69,7 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
       phoneStateListener = object : PhoneStateListener() {
         override fun onCallStateChanged(state: Int, incomingNumber: String) {
           if (state == TelephonyManager.CALL_STATE_RINGING) {
-            if (jcStatus.playState == JcStatus.PlayState.PAUSE) {
+            if (isPlaying) {
               currentAudio?.let {
                 pause(it)
               }
@@ -360,10 +361,25 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     try {
       val mgr = getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
       mgr?.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
+
     } catch (e: Exception) {
       e.printStackTrace()
     }
     super.onDestroy()
+  }
+
+  override fun onAudioFocusChange(focusChange: Int) {
+    if(focusChange<=0) {
+      //LOSS -> PAUSE
+      currentAudio?.let {
+        pause(it)
+      }
+    } else {
+      //GAIN -> PLAY
+      currentAudio?.let {
+        play(it)
+      }
+    }
   }
 
 }
