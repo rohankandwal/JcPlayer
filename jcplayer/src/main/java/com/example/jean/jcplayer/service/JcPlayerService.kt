@@ -268,17 +268,19 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
   private fun updateTime() {
     object : Thread() {
       override fun run() {
-        while (isPlaying && isPrepared) {
-          try {
-            val status = updateStatus(currentAudio, JcStatus.PlayState.PLAYING)
-            serviceListener?.onTimeChangedListener(status)
-            Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-          } catch (e: IllegalStateException) {
-            e.printStackTrace()
-          } catch (e: InterruptedException) {
-            e.printStackTrace()
-          } catch (e: NullPointerException) {
-            e.printStackTrace()
+        while (isPlaying) {
+          if (isPrepared) {
+            try {
+              val status = updateStatus(currentAudio, JcStatus.PlayState.PLAYING)
+              serviceListener?.onTimeChangedListener(status)
+              Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+            } catch (e: IllegalStateException) {
+              e.printStackTrace()
+            } catch (e: InterruptedException) {
+              e.printStackTrace()
+            } catch (e: NullPointerException) {
+              e.printStackTrace()
+            }
           }
         }
       }
