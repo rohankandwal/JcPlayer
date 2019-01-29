@@ -344,11 +344,12 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
   fun finalize() {
     Log.d("Killer", "onTaskRemoved")
     onDestroy()
-    stopSelf()
+    stopForeground(false)
   }
 
   override fun onTaskRemoved(rootIntent: Intent?) {
     Log.d("Killer", "onTaskRemoved")
+    stopForeground(false)
     serviceListener?.onKill()
     super.onTaskRemoved(rootIntent)
   }
