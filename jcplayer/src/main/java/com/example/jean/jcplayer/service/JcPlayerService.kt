@@ -1,12 +1,15 @@
 package com.example.jean.jcplayer.service
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.res.AssetFileDescriptor
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
+import android.telephony.PhoneStateListener
+import android.telephony.TelephonyManager
 import android.util.Log
 import com.example.jean.jcplayer.general.JcStatus
 import com.example.jean.jcplayer.general.Origin
@@ -55,6 +58,36 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
 
   override fun onBind(intent: Intent): IBinder? = binder
 
+  private lateinit var phoneStateListener: PhoneStateListener
+
+  override fun onCreate() {
+    super.onCreate()
+
+    // Listening for phone call ringtone
+    try {
+      phoneStateListener = object : PhoneStateListener() {
+        override fun onCallStateChanged(state: Int, incomingNumber: String) {
+          if (state == TelephonyManager.CALL_STATE_RINGING) {
+            if (jcStatus.playState == JcStatus.PlayState.PAUSE) {
+              currentAudio?.let {
+                pause(it)
+              }
+            }
+          } else if (state == TelephonyManager.CALL_STATE_IDLE) {
+
+          } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
+
+          }
+          super.onCallStateChanged(state, incomingNumber)
+        }
+      }
+      val mgr = getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+      mgr?.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
+    } catch (e: Exception) {
+      Log.e("tmessages", e.toString())
+    }
+
+  }
 
   fun play(jcAudio: JcAudio): JcStatus {
     val tempJcAudio = currentAudio
@@ -322,6 +355,14 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
   override fun onDestroy() {
     Log.d("Killer", "onTaskRemoved")
     serviceListener?.onKill()
+
+    // Removing listener for call ringtone pause
+    try {
+      val mgr = getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+      mgr?.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
     super.onDestroy()
   }
 
