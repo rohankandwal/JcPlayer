@@ -62,6 +62,12 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
       get() = this@JcPlayerService
   }
 
+  override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+
+    return Service.START_STICKY
+  }
+
+
   override fun onBind(intent: Intent): IBinder? = binder
 
   private lateinit var phoneStateListener: PhoneStateListener
@@ -354,20 +360,25 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     onDestroy()
     stopForeground(false)
   }
-
+  override fun onUnbind(intent: Intent?): Boolean {
+    Handler(Looper.getMainLooper()).post {
+      serviceListener?.onKill()
+    }
+    return super.onUnbind(intent)
+  }
   override fun onTaskRemoved(rootIntent: Intent?) {
-    Log.d("Killer", "onTaskRemoved")
     stopForeground(false)
 //    serviceListener?.onKill()
-    Handler().post {
+    Handler(Looper.getMainLooper()).post {
+      Log.d("Killer", "onTaskRemoved")
       serviceListener?.onKill()
     }
     super.onTaskRemoved(rootIntent)
   }
 
   override fun onDestroy() {
-    Log.d("Killer", "onTaskRemoved")
-    Handler().post {
+    Handler(Looper.getMainLooper()).post {
+      Log.d("Killer", "onTaskRemoved")
       serviceListener?.onKill()
     }
 
