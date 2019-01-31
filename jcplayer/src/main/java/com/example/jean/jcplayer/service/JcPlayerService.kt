@@ -8,7 +8,9 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -356,13 +358,18 @@ class JcPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
   override fun onTaskRemoved(rootIntent: Intent?) {
     Log.d("Killer", "onTaskRemoved")
     stopForeground(false)
-    serviceListener?.onKill()
+//    serviceListener?.onKill()
+    Handler().post {
+      serviceListener?.onKill()
+    }
     super.onTaskRemoved(rootIntent)
   }
 
   override fun onDestroy() {
     Log.d("Killer", "onTaskRemoved")
-    serviceListener?.onKill()
+    Handler().post {
+      serviceListener?.onKill()
+    }
 
     // Removing listener for call ringtone pause
     try {

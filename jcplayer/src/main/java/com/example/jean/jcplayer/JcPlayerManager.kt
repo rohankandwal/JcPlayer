@@ -358,7 +358,7 @@ class JcPlayerManager
         jcPlayerService?.let {
           it.stopForeground(false)
             it.stop()
-            it.onDestroy()
+//            it.onDestroy()
         }
 
         serviceConnection.disconnect()
