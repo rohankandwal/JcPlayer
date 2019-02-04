@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity
 //        player.next();
     }
 
-
     @Override
     public void onPreparedAudio(JcStatus status) {
 
